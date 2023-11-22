@@ -19,11 +19,11 @@ namespace ProniaAB202.Controllers
         //    return View();
         //}
 
-        public IActionResult Detail(int id)
+        public async Task<IActionResult> Detail(int id)
         {
             if (id <= 0) return BadRequest();
            
-            Product product = _context.Products.Include(p=>p.Category).FirstOrDefault(p => p.Id == id);
+            Product product =await _context.Products.Include(p=>p.Category).FirstOrDefaultAsync(p => p.Id == id);
             
 
             if (product == null) return NotFound();
