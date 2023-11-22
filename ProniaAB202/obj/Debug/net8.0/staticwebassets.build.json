@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "6x7hFYtoellkDK6Xo/3ECTAFoqXqeMVaU0onCcy6BAs=",
+  "Hash": "7cEIqJgotw3xh2NVTPC+VADzgAgPlgnPL7TcVnoS7nA=",
   "Source": "ProniaAB202",
   "BasePath": "_content/ProniaAB202",
   "Mode": "Default",
@@ -3511,6 +3511,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\images\\slider\\inner-img\\1-2-524x617.png"
+    },
+    {
+      "Identity": "C:\\Users\\Sheki Komp\\Desktop\\Task22.11.23\\ProniaTask\\ProniaAB202\\wwwroot\\assets\\images\\slider\\Nargiz.jfif",
+      "SourceId": "ProniaAB202",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Sheki Komp\\Desktop\\Task22.11.23\\ProniaTask\\ProniaAB202\\wwwroot\\",
+      "BasePath": "_content/ProniaAB202",
+      "RelativePath": "assets/images/slider/Nargiz.jfif",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\images\\slider\\Nargiz.jfif"
     },
     {
       "Identity": "C:\\Users\\Sheki Komp\\Desktop\\Task22.11.23\\ProniaTask\\ProniaAB202\\wwwroot\\assets\\images\\slider\\slide 1.jfif",
