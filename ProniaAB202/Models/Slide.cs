@@ -12,10 +12,10 @@ namespace ProniaAB202.Models
 
         public string Description { get; set; }
 
-        public string Image {  get; set; }
+        public string? Image {  get; set; }
 
         public int Order { get; set; }
         [NotMapped]
-        public IFormFile Photo { get; set; }  
+        public IFormFile? Photo { get; set; }  
     }
 }
