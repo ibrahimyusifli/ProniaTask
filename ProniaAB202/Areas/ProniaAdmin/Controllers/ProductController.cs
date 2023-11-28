@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ProniaAB202.Areas.ProniaAdmin.ViewModels;
 using ProniaAB202.DAL;
 using ProniaAB202.Models;
+using ProniaAB202.Utilities.Extentions;
 
 namespace ProniaAB202.Areas.ProniaAdmin.Controllers
 {
@@ -10,9 +11,11 @@ namespace ProniaAB202.Areas.ProniaAdmin.Controllers
     public class ProductController : Controller
     {
         private readonly AppDbContext _context;
-        public ProductController(AppDbContext context)
+        private readonly IWebHostEnvironment _env;
+        public ProductController(AppDbContext context,IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
         public async Task<IActionResult> Index()
         {
@@ -62,6 +65,55 @@ namespace ProniaAB202.Areas.ProniaAdmin.Controllers
                 }
             }
 
+
+            if (!productVM.MainPhoto.ValidateType("image/"))
+            {
+                ViewBag.Categories = await _context.Categories.ToListAsync();
+                ViewBag.Tags = await _context.Tags.ToListAsync();
+                ModelState.AddModelError("MainPhoto", "File tipi uygun deyil");
+                return View();
+            }
+
+            if (!productVM.MainPhoto.ValidateSize(600))
+            {
+                ViewBag.Categories = await _context.Categories.ToListAsync();
+                ViewBag.Tags = await _context.Tags.ToListAsync();
+                ModelState.AddModelError("MainPhoto", "File olcusu uygun deyil");
+                return View();
+            }
+
+            if (!productVM.HoverPhoto.ValidateType("image/"))
+            {
+                ViewBag.Categories = await _context.Categories.ToListAsync();
+                ViewBag.Tags = await _context.Tags.ToListAsync();
+                ModelState.AddModelError("HoverPhoto", "File tipi uygun deyil");
+                return View();
+            }
+
+            if (!productVM.HoverPhoto.ValidateSize(600))
+            {
+                ViewBag.Categories = await _context.Categories.ToListAsync();
+                ViewBag.Tags = await _context.Tags.ToListAsync();
+                ModelState.AddModelError("HoverPhoto", "File olcusu uygun deyil");
+                return View();
+            }
+
+
+            ProductImage main = new ProductImage
+            {
+                IsPrimary = true,
+                Url=await productVM.MainPhoto.CreateFileAsync(_env.WebRootPath,"assets","images","website-images"),
+                Alternative=productVM.Name
+            };
+
+            ProductImage hover = new ProductImage
+            {
+                IsPrimary = false,
+                Url = await productVM.HoverPhoto.CreateFileAsync(_env.WebRootPath, "assets", "images", "website-images"),
+                Alternative = productVM.Name
+            };
+
+
             Product product = new Product
             {
                 SKU = productVM.SKU,
@@ -69,8 +121,32 @@ namespace ProniaAB202.Areas.ProniaAdmin.Controllers
                 Name = productVM.Name,
                 Price = productVM.Price,
                 CategoryId = (int)productVM.CategoryId,
-                ProductTags=new List<ProductTag>()  
+                ProductTags=new List<ProductTag>(),
+                ProductImages=new List<ProductImage> { main, hover }
             };
+
+
+            TempData["Message"] = "";
+            foreach (IFormFile photo in productVM.Photos  ?? new List<IFormFile>())
+            {
+                if (!photo.ValidateType("image/"))
+                {
+                    TempData["Message"] += $" <p class=\"text-danger\">{photo.FileName} sdli file tipi uygun deyil</p>";
+                    continue;
+                }
+                if (!photo.ValidateSize(600))
+                {
+                    TempData["Message"] += $"<p class=\"text-danger\">{photo.FileName} sdli file olcusu uygun deyil</p>";
+                    continue;
+                }
+                product.ProductImages.Add(new ProductImage
+                {
+                    IsPrimary=null,
+                    Alternative=productVM.Name,
+                    Url = await photo.CreateFileAsync(_env.WebRootPath,"assets","images","website-images")
+                });   
+
+            }
 
            
             foreach (int tagId in productVM.TagIds)
@@ -133,23 +209,52 @@ namespace ProniaAB202.Areas.ProniaAdmin.Controllers
                 return View(productVM);
             }
 
-            foreach (ProductTag pTag in existed.ProductTags)
+            //List<ProductTag> removeable = existed.ProductTags.Where(pt=>!productVM.TagIds.Exists(tId=>tId==pt.TagId)).ToList();
+            //_context.ProductTags.RemoveRange(removeable);
+
+
+            existed.ProductTags.RemoveAll(pt => !productVM.TagIds.Exists(tId => tId == pt.TagId));
+
+            //foreach (ProductTag pTag in existed.ProductTags)
+            //{
+            //    if (!productVM.TagIds.Exists(tId => tId == pTag.TagId))
+            //    {
+            //        _context.ProductTags.Remove(pTag);
+            //    }
+            //}
+
+
+            List<int> creatable = productVM.TagIds.Where(tId=>!existed.ProductTags.Exists(pt=>pt.TagId==tId)).ToList();
+            foreach (int tId in creatable)
             {
-                if (!productVM.TagIds.Exists(tId => tId == pTag.TagId))
+                bool tagResult = await _context.Tags.AllAsync(t => t.Id == tId);
+                if (!tagResult)
                 {
-                    _context.ProductTags.Remove(pTag);
+                    productVM.Categories = await _context.Categories.ToListAsync();
+                    productVM.Tags = await _context.Tags.ToListAsync();
+                    ModelState.AddModelError("TagIds", "Bele bir Tag movcud deyil");    
+                    return View(productVM);
                 }
+                existed.ProductTags.Add(new ProductTag
+                {
+                    TagId = tId,
+                });
             }
-            foreach (int tId in productVM.TagIds)
-            {
-                if (!existed.ProductTags.Any(pt=>pt.TagId==tId))
-                {                  
-                    existed.ProductTags.Add(new ProductTag
-                    {
-                        TagId = tId
-                    });
-                }
-            }
+
+
+
+
+
+            //foreach (int tId in productVM.TagIds)
+            //{
+            //    if (!existed.ProductTags.Any(pt=>pt.TagId==tId))
+            //    {                  
+            //        existed.ProductTags.Add(new ProductTag
+            //        {
+            //            TagId = tId
+            //        });
+            //    }
+            //}
 
             existed.Name = productVM.Name;
             existed.Description = productVM.Description;

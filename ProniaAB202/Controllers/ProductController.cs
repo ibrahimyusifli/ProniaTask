@@ -23,7 +23,12 @@ namespace ProniaAB202.Controllers
         {
             if (id <= 0) return BadRequest();
            
-            Product product =await _context.Products.Include(p=>p.Category).FirstOrDefaultAsync(p => p.Id == id);
+            Product product =await _context.Products
+                .Include(p=>p.Category)
+                .Include(p=>p.ProductImages)
+                 .Include(p => p.ProductTags)
+                 .ThenInclude(pt=>pt.Tag)
+                .FirstOrDefaultAsync(p => p.Id == id);
             
 
             if (product == null) return NotFound();
