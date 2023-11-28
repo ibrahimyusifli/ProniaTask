@@ -15,6 +15,8 @@ namespace ProniaAB202.Areas.ProniaAdmin.ViewModels
         public string SKU { get; set; }
         [Required]
         public int? CategoryId { get; set; }
+
+        public List<int> TagIds { get; set; }
            
     }
 }

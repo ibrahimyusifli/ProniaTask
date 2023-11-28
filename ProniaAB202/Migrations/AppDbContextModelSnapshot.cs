@@ -32,7 +32,8 @@ namespace ProniaAB202.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
 
                     b.HasKey("Id");
 
@@ -101,6 +102,29 @@ namespace ProniaAB202.Migrations
                     b.ToTable("ProductImages");
                 });
 
+            modelBuilder.Entity("ProniaAB202.Models.ProductTag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("ProductTags");
+                });
+
             modelBuilder.Entity("ProniaAB202.Models.Slide", b =>
                 {
                     b.Property<int>("Id")
@@ -133,6 +157,23 @@ namespace ProniaAB202.Migrations
                     b.ToTable("Slides");
                 });
 
+            modelBuilder.Entity("ProniaAB202.Models.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
+                });
+
             modelBuilder.Entity("ProniaAB202.Models.Product", b =>
                 {
                     b.HasOne("ProniaAB202.Models.Category", "Category")
@@ -155,6 +196,25 @@ namespace ProniaAB202.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("ProniaAB202.Models.ProductTag", b =>
+                {
+                    b.HasOne("ProniaAB202.Models.Product", "Product")
+                        .WithMany("ProductTags")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProniaAB202.Models.Tag", "Tag")
+                        .WithMany("ProductTags")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Tag");
+                });
+
             modelBuilder.Entity("ProniaAB202.Models.Category", b =>
                 {
                     b.Navigation("Products");
@@ -163,6 +223,13 @@ namespace ProniaAB202.Migrations
             modelBuilder.Entity("ProniaAB202.Models.Product", b =>
                 {
                     b.Navigation("ProductImages");
+
+                    b.Navigation("ProductTags");
+                });
+
+            modelBuilder.Entity("ProniaAB202.Models.Tag", b =>
+                {
+                    b.Navigation("ProductTags");
                 });
 #pragma warning restore 612, 618
         }
