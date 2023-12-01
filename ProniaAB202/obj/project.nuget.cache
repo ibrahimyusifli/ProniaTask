@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2WfYATYOVj2TwNHYhC7l9qImHQh1WAJA+tLeRpZnrhDVQ/0On/4XMkfAxa3TvDHw98qTtc3/hV10VfTcUyseBA==",
+  "dgSpecHash": "P4oy6W1lEwWimtMneP4/o1t1lqZopXErgTpJhZTV/Q+03X0VAWOo6/fTBVXC5SXKomKtJIbnygXPGZYWjukOuA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Sheki Komp\\Desktop\\Taskkkkkk\\ProniaTask\\ProniaAB202\\ProniaAB202.csproj",
+  "projectFilePath": "C:\\Users\\Sheki Komp\\Desktop\\ProniaTaski\\ProniaTask\\ProniaAB202\\ProniaAB202.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Sheki Komp\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Sheki Komp\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
