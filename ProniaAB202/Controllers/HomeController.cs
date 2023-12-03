@@ -43,5 +43,26 @@ namespace ProniaAB202.Controllers
         {
             return View();
         }
+
+        //public ActionResult Test()
+        //{
+        //    Response.Cookies.Append("Score", "5-0",new CookieOptions
+        //    {
+        //        MaxAge=TimeSpan.FromSeconds(10)
+        //    });
+
+
+        //    HttpContext.Session.SetString("Score2","1-0");
+           
+        //    return Ok();
+        //}
+
+        //public IActionResult GetCookie()
+        //{
+        //    string score = Request.Cookies["Score"];
+
+        //    string score2 = HttpContext.Session.GetString("Score2");
+        //    return Content(score+" "+score2);
+        //}
     }
-}
+}   
