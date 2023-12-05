@@ -853,3 +853,4 @@ C:\Users\Sheki Komp\Desktop\ProniaTaski\ProniaTask\ProniaAB202\obj\Debug\net8.0\
 C:\Users\Sheki Komp\Desktop\ProniaTaski\ProniaTask\ProniaAB202\obj\Debug\net8.0\ProniaAB202.pdb
 C:\Users\Sheki Komp\Desktop\ProniaTaski\ProniaTask\ProniaAB202\obj\Debug\net8.0\ProniaAB202.genruntimeconfig.cache
 C:\Users\Sheki Komp\Desktop\ProniaTaski\ProniaTask\ProniaAB202\obj\Debug\net8.0\ref\ProniaAB202.dll
+C:\Users\Sheki Komp\Desktop\ProniaTaski\ProniaTask\ProniaAB202\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll

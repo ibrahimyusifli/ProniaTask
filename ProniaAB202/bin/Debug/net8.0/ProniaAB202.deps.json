@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v8.0": {
       "ProniaAB202/1.0.0": {
         "dependencies": {
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.25",
           "Microsoft.EntityFrameworkCore": "7.0.14",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.14",
           "Microsoft.EntityFrameworkCore.Tools": "7.0.14",
@@ -588,6 +589,24 @@
         "resources": {
           "lib/net6.0/zh-Hant/Humanizer.resources.dll": {
             "locale": "zh-Hant"
+          }
+        }
+      },
+      "Microsoft.AspNetCore.Cryptography.Internal/6.0.25": {},
+      "Microsoft.AspNetCore.Cryptography.KeyDerivation/6.0.25": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Cryptography.Internal": "6.0.25"
+        }
+      },
+      "Microsoft.AspNetCore.Identity.EntityFrameworkCore/6.0.25": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Relational": "7.0.14",
+          "Microsoft.Extensions.Identity.Stores": "6.0.25"
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll": {
+            "assemblyVersion": "6.0.25.0",
+            "fileVersion": "6.0.2523.52315"
           }
         }
       },
@@ -1245,6 +1264,20 @@
             "assemblyVersion": "8.0.0.0",
             "fileVersion": "8.0.23.53103"
           }
+        }
+      },
+      "Microsoft.Extensions.Identity.Core/6.0.25": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Cryptography.KeyDerivation": "6.0.25",
+          "Microsoft.Extensions.Logging": "7.0.0",
+          "Microsoft.Extensions.Options": "7.0.0"
+        }
+      },
+      "Microsoft.Extensions.Identity.Stores/6.0.25": {
+        "dependencies": {
+          "Microsoft.Extensions.Caching.Abstractions": "7.0.0",
+          "Microsoft.Extensions.Identity.Core": "6.0.25",
+          "Microsoft.Extensions.Logging": "7.0.0"
         }
       },
       "Microsoft.Extensions.Logging/7.0.0": {
@@ -2228,6 +2261,27 @@
       "path": "humanizer.core.zh-hant/2.14.1",
       "hashPath": "humanizer.core.zh-hant.2.14.1.nupkg.sha512"
     },
+    "Microsoft.AspNetCore.Cryptography.Internal/6.0.25": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KKuDD1sD6cfYbdNQSZOaXqnic1mJ3FMTx5TOfhhmAJVWlwbmpwlmSTjmSvRGB6NVr5yx4kENmKcYr7JgEziogg==",
+      "path": "microsoft.aspnetcore.cryptography.internal/6.0.25",
+      "hashPath": "microsoft.aspnetcore.cryptography.internal.6.0.25.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Cryptography.KeyDerivation/6.0.25": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-wbCg3/UaG334+i2ma9G0Gs478lzJV0+PDw7N100cSGLRG7KJSEmWzdIoLcgjHsmJ+xGAiQ+1h0zCz7VjGL3vRg==",
+      "path": "microsoft.aspnetcore.cryptography.keyderivation/6.0.25",
+      "hashPath": "microsoft.aspnetcore.cryptography.keyderivation.6.0.25.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Identity.EntityFrameworkCore/6.0.25": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7oRXigpVioKyZ1EdlvbUlDQqlcLWuVojaOTrEwHAHkMSQNYOn47D87naV6oC/jqWreMO0RFI98LwcYrrgmIXcQ==",
+      "path": "microsoft.aspnetcore.identity.entityframeworkcore/6.0.25",
+      "hashPath": "microsoft.aspnetcore.identity.entityframeworkcore.6.0.25.nupkg.sha512"
+    },
     "Microsoft.AspNetCore.Razor.Language/6.0.24": {
       "type": "package",
       "serviceable": true,
@@ -2458,6 +2512,20 @@
       "sha512": "sha512-NSmDw3K0ozNDgShSIpsZcbFIzBX4w28nDag+TfaQujkXGazBm+lid5onlWoCBy4VsLxqnnKjEBbGSJVWJMf43g==",
       "path": "microsoft.extensions.dependencymodel/8.0.0",
       "hashPath": "microsoft.extensions.dependencymodel.8.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Identity.Core/6.0.25": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-01fkwJA2oMqjFDG6pz38vHEFlps94fuMOnbxFv9dmsKguW6rI5n7ki7s/nhLZhdyZ32stoR6GqkyvANw+PFprg==",
+      "path": "microsoft.extensions.identity.core/6.0.25",
+      "hashPath": "microsoft.extensions.identity.core.6.0.25.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Identity.Stores/6.0.25": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-mR1pKUAsuMaI9Yw5Zx2XfSvHWrN4MjCPOK9e9+KguZ9AmwpydacoVudFX78Pc1KFaW3RWO8JXD5yMasnG6SxnQ==",
+      "path": "microsoft.extensions.identity.stores/6.0.25",
+      "hashPath": "microsoft.extensions.identity.stores.6.0.25.nupkg.sha512"
     },
     "Microsoft.Extensions.Logging/7.0.0": {
       "type": "package",
