@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProniaAB202.Areas.ProniaAdmin.ViewModels;
 using ProniaAB202.DAL;
@@ -17,6 +18,7 @@ namespace ProniaAB202.Areas.ProniaAdmin.Controllers
             _context = context;
             _env = env;
         }
+        [Authorize(Roles ="Admin,Moderator")]
         public async Task<IActionResult> Index()
         {
             List<Product> products=await _context.Products
@@ -27,6 +29,7 @@ namespace ProniaAB202.Areas.ProniaAdmin.Controllers
                 .ToListAsync();
             return View(products);
         }
+        [Authorize(Roles = "Admin,Moderator")]
 
         public async Task<IActionResult> Create()
         {
@@ -166,7 +169,7 @@ namespace ProniaAB202.Areas.ProniaAdmin.Controllers
             return RedirectToAction(nameof(Index));
 
         }
-
+        [Authorize(Roles = "Admin,Moderator")]
 
         public async Task<IActionResult> Update(int id)
         {
@@ -362,6 +365,7 @@ namespace ProniaAB202.Areas.ProniaAdmin.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        [Authorize(Roles = "Admin")]    
 
         public async Task<IActionResult> Delete(int id)
         {

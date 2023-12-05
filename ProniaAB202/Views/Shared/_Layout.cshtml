@@ -162,13 +162,13 @@
                                                         <a class="dropdown-item" href="my-account.html">@User.Identity.Name</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" asp-action="logout" asp-controller="account">Log Out</a>
+                                                        <a class="dropdown-item" asp-action="logout" asp-controller="account" asp-route-returnurl="@Context.Request.Path.Value">Log Out</a>
                                                     </li>
                          }
                          else
                          {
                                                     <li>
-                                                        <a class="dropdown-item" asp-action="register" asp-controller="account"> Register</a>
+                                                        <a class="dropdown-item" asp-action="login" asp-controller="account"> Login</a>
                                                     </li>
                          }
                           
