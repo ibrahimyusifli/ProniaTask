@@ -6,6 +6,7 @@ using ProniaAB202.Models;
 namespace ProniaAB202.Areas.ProniaAdmin.Controllers
 {
     [Area("ProniaAdmin")]
+    [AutoValidateAntiforgeryToken]
     public class CategoryController : Controller
     {
         private readonly AppDbContext _context;
@@ -23,6 +24,7 @@ namespace ProniaAB202.Areas.ProniaAdmin.Controllers
             return View();
         }
         [HttpPost]
+       
         public async Task<IActionResult> Create(Category category)
         {
             if (!ModelState.IsValid)

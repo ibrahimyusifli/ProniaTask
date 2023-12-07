@@ -35,7 +35,7 @@ builder.Services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
 builder.Services.AddScoped<LayoutService>();
 
 var app = builder.Build();
-
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();   
