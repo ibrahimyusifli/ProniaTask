@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
 using ProniaAB202.DAL;
+using ProniaAB202.Intefaces;
 using ProniaAB202.Models;
 using ProniaAB202.ViewModels;
+using System.Diagnostics.Metrics;
 using System.Security.Claims;
 
 namespace ProniaAB202.Controllers
@@ -13,10 +17,13 @@ namespace ProniaAB202.Controllers
     {
         public readonly AppDbContext _context;
         public readonly UserManager<AppUser> _userManager;
-        public BasketController(AppDbContext context,UserManager<AppUser> userManager)
+        private readonly IEmailService _emailService;
+
+        public BasketController(AppDbContext context,UserManager<AppUser> userManager,IEmailService emailService)
         {
             _context = context;
             _userManager = userManager;
+            _emailService = emailService;
         }
 
         public async Task<IActionResult> Index()
@@ -26,7 +33,7 @@ namespace ProniaAB202.Controllers
             if(User.Identity.IsAuthenticated)
             {
                 AppUser? user = await _userManager.Users
-                    .Include(u => u.BasketItems)
+                    .Include(u => u.BasketItems.Where(bi => bi.OrederId == null))
                     .ThenInclude(bi => bi.Product)
                     .ThenInclude(p => p.ProductImages.Where(pi => pi.IsPrimary == true))
                     .FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -88,7 +95,7 @@ namespace ProniaAB202.Controllers
                // AppUser user = await _userManager.Users.Include(u => u.BasketItems).FirstOrDefaultAsync(u=>u.UserName==User.Identity.Name);
                 
                 AppUser? user = await _userManager.Users
-                    .Include(u => u.BasketItems)
+                    .Include(u => u.BasketItems.Where(bi => bi.OrederId == null))
                     .FirstOrDefaultAsync(u => u.Id==User.FindFirstValue(ClaimTypes.NameIdentifier));
 
                 if(user == null) return NotFound();
@@ -161,14 +168,101 @@ namespace ProniaAB202.Controllers
             
             return RedirectToAction(nameof(Index),"Home");
         }
-        public IActionResult CheckOut()
+        [Authorize(Roles ="Member")]
+        public async Task<IActionResult> CheckOut()
         {
-            return View();
+            AppUser user = await _userManager.Users
+                .Include(u => u.BasketItems.Where(bi => bi.OrederId == null))
+                .ThenInclude(bi => bi.Product)
+                .FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            OrderVM orderVM = new OrderVM
+            {
+                BasketItems=user.BasketItems
+            };
+            return View(orderVM);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CheckOut(OrderVM orderVM)
+        {
+            AppUser user = await _userManager.Users
+               .Include(u => u.BasketItems.Where(bi=>bi.OrederId==null))
+               .ThenInclude(bi => bi.Product)
+               .FirstOrDefaultAsync(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (!ModelState.IsValid)
+            {
+                orderVM.BasketItems = user.BasketItems;
+                return View(orderVM);
+            }
+
+            decimal total = 0;
+            foreach (var item in user.BasketItems)
+            {
+                item.Price = item.Product.Price;
+
+                total += item.Price * item.Count;
+            }
+
+            Order order = new Order
+            {
+                Status = null,
+                Address = orderVM.Address,
+                AppUserId=user.Id,
+                PurchasedAt= DateTime.Now,
+                BasketItems=user.BasketItems,
+                TotalPrice=total
+            };
+
+
+
+            await _context.Orders.AddAsync(order);
+            await _context.SaveChangesAsync();
+
+            string body = @"
+                        Your order successfully placed:
+                          <table border=""1"">
+                           <thead>
+                               <tr>
+                                   <th> Name </th>
+                                  <th> Price </th>
+                                   <th> Count </th>
+                               </tr>
+                           </thead>
+                           <tbody>";
+            foreach (var item in order.BasketItems)
+            {
+                body += @$" <tr>
+                              <td>{item.Product.Name}</td>
+                              <td>{item.Price}</td>
+                              <td>{item.Count}</td> 
+                          </tr>";
+            }
+            body += @"</tbody>
+                    </table>";
+
+
+            await _emailService.SendEmailAsync(user.Email, "Your order", body, true);
+
+            return RedirectToAction("Index","Home");
         }
 
-        //public IActionResult GetBasket()
-        //{
-        //    return Content(Request.Cookies["Basket"]);
-        //}
     }
 }
+
+//<table>
+//    <thead>
+//        <tr>
+//            <th> Name </th>
+//            <th> Price </th>
+//            <th> Count </th>
+//        </tr>
+//    </thead>
+//    <tbody>
+//        <tr>
+//            <td></td>
+//            <td></td>
+//            <td></td>
+//        </tr>
+//    </tbody>
+//</table>
+

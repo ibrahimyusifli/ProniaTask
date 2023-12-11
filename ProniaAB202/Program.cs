@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ProniaAB202.DAL;
+using ProniaAB202.Intefaces;
 using ProniaAB202.Models;
 using ProniaAB202.Services;
 
@@ -33,6 +34,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     
 builder.Services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
 builder.Services.AddScoped<LayoutService>();
+builder.Services.AddScoped<IEmailService,EmailService>();
 
 var app = builder.Build();
 app.UseRouting();

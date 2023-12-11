@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProniaAB202.DAL;
 using ProniaAB202.Models;
+using ProniaAB202.Services;
 using ProniaAB202.ViewModels;
 
 namespace ProniaAB202.Controllers
@@ -9,6 +10,7 @@ namespace ProniaAB202.Controllers
     public class HomeController : Controller
     {
         private readonly AppDbContext _context;
+      
 
         public HomeController(AppDbContext context)
         {
@@ -18,10 +20,7 @@ namespace ProniaAB202.Controllers
 
         public async Task<IActionResult> Index()
         {
-
-
-
-
+           
             //_context.Slides.AddRange(slides);
             //_context.SaveChanges();
 
