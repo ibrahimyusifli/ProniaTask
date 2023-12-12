@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ProniaAB202.DAL;
 using ProniaAB202.Intefaces;
+using ProniaAB202.Middlewares;
 using ProniaAB202.Models;
 using ProniaAB202.Services;
 
@@ -42,6 +43,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();   
 app.UseStaticFiles();
+app.UseMiddleware<GlobalExceptionHandlerMiddlerware>();
+
 app.MapControllerRoute(
     "area",
     "{area:exists}/{controller=home}/{action=index}/{id?}"

@@ -19,15 +19,26 @@ namespace ProniaAB202.Areas.ProniaAdmin.Controllers
             _env = env;
         }
         [Authorize(Roles ="Admin,Moderator")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page=1)
         {
-            List<Product> products=await _context.Products
+            int count=await _context.Products.CountAsync();
+            ViewBag.TotalPage = Math.Ceiling((double)count / 3);
+            ViewBag.CurrentPage = page;
+
+            List<Product> products=await _context.Products.Skip((page-1)*3).Take(3)
                 .Include(p=>p.Category)
                 .Include(p=>p.ProductImages.Where(pi=>pi.IsPrimary==true))
                 .Include(p=>p.ProductTags)
                 .ThenInclude(pt=>pt.Tag)
                 .ToListAsync();
-            return View(products);
+
+            PaginateVM<Product> paginateVM = new PaginateVM<Product>
+            {
+                Items = products,
+                TotalPage= Math.Ceiling((double)count / 3),
+                CurrentPage= page
+            };
+            return View(paginateVM);
         }
         [Authorize(Roles = "Admin,Moderator")]
 

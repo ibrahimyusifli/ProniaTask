@@ -20,6 +20,7 @@ namespace ProniaAB202.Controllers
 
         public async Task<IActionResult> Index()
         {
+ 
            
             //_context.Slides.AddRange(slides);
             //_context.SaveChanges();
@@ -41,6 +42,11 @@ namespace ProniaAB202.Controllers
         public IActionResult About()
         {
             return View();
+        }
+
+        public IActionResult ErrorPage(string error="xeta bas verdi")
+        {
+            return View(model:error);
         }
 
         //public ActionResult Test()
